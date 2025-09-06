@@ -8,7 +8,6 @@ __valid_labels__ = [
 ]
 
 def detect_nude(file, labels = __valid_labels__):
-    labels=[]
     detector = NudeDetector(
         model_path="src/nsfw_detection/models/640m.onnx", 
         inference_resolution=640
