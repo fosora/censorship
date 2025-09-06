@@ -1,6 +1,7 @@
 # generated files
 output/
 files/
+debug/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
