@@ -51,7 +51,7 @@ def main(args):
                 )
                 item['image']['debug'] = {
                     'path': debug_path,
-                    'data': debug_image
+                    'data':f'{debug_image}/{item["name"]}' 
                 }
                 logger.debug(f"Debug data added for {item['name']}")
 
@@ -72,7 +72,7 @@ def main(args):
             censored_path = f'{args.output}/censored'
             item['image']['censored'] = {
                 'data': censored_image,
-                'path': censored_path
+                'path': f'{censored_path}/{item["name"]}'
             }
             logger.info(f"Censorship completed for {item['name']}")
 
@@ -95,7 +95,7 @@ def main(args):
 
     if args.debug:
         logger.info("Saving debug data")
-        save_file_data(data)
+        save_file_data(data, f'{args.output}/data.json')
         logger.info("Debug data saved")
 
 if __name__ == "__main__":

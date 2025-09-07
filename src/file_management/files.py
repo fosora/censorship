@@ -77,7 +77,30 @@ def get_file_data(files: List[str]):
 
 def save_file_data(data: List[dict], output_path: str = "output/data.json"):
     import json
+    if not Path(output_path).parent.exists():
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+    json_data = [
+        {
+            "name": item["name"],
+            "path": item["path"],
+            "status": item["status"],
+            "image": {
+                "original": {
+                    "path": str(Path(item["image"]["original"]["path"]).absolute())
+                },
+                "debug": {
+                    "path": str(Path(item["image"]["debug"]["path"]).absolute())
+                },
+                "censored": {
+                    "path": str(Path(item["image"]["censored"]["path"]).absolute())
+                },
+                "detect_data": item["detect_data"],
+            }
+        }
+        for item in data
+    ]
+    
+    #logger.debug(f"Saving file data to {output_path}")
     with open(output_path, 'w') as f:
-        #TODO: change to save only necessary data
-        # filepath instead of image data
-        json.dump(data, f, indent=4)
+        json.dump(json_data, f, indent=4)
+    #logger.debug("File data saved successfully")
