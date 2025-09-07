@@ -23,6 +23,7 @@ def get_files(
                 file.suffix.lower() in extensions
     ]
 
+# This might get moved to another file later
 def get_file_data(files: List[str]):
     """
     Args:  
@@ -56,9 +57,18 @@ def get_file_data(files: List[str]):
             "path": file,
             "detect_data": [],
             "image": {
-                "original": None,
-                "debug": None,
-                "censored": None,
+                "original": {
+                    "data": [],
+                    "path": ''
+                },
+                "debug": {
+                    "data": [],
+                    "path": ''
+                },
+                "censored": {
+                    "data": [],
+                    "path": ''
+                },
             },
             "status": "pending",
         }
