@@ -1,10 +1,8 @@
 import argparse
-
-def valid_pixel_size(pixel_size):
-    pixel_size = int(pixel_size)
-    if pixel_size < 1 or pixel_size > 256:
-        raise argparse.ArgumentTypeError(f"The value {pixel_size} is not between 1 and 256.")
-    return pixel_size
+from src.debug_mode.args import add_debug_args, add_log_args
+from src.image_edition.args import add_image_edition_args
+from src.file_management.args import add_file_management_args
+from src.nsfw_detection.args import add_nsfw_args 
 
 def get_args():
     """
@@ -14,29 +12,15 @@ def get_args():
         argparse.Namespace: Parsed command line arguments.
     """
     parser = argparse.ArgumentParser(
+        prog="censorship",
+        usage="python main.py [options]",
         description="Nude Image Censorship Tool"
     )
-    parser.add_argument(
-        '-i', '--input', 
-        type=str, 
-        default='files', 
-        help='Input directory containing images to process'
-    )
-    parser.add_argument(
-        '-o', '--output', 
-        type=str, 
-        default='output', 
-        help='Output directory to save processed images'
-    )
-    parser.add_argument(
-        '-p', '--pixel-size', 
-        type=valid_pixel_size, 
-        default=3, 
-        help='Pixelation block size for censorship (default: 3)'
-    )
-    parser.add_argument(
-        '-d', '--debug', 
-        action='store_true', 
-        help='Enable debug mode to save debug images'
-    )
+
+    add_debug_args(parser)
+    add_log_args(parser)
+    add_nsfw_args(parser)
+    add_file_management_args(parser)
+    add_image_edition_args(parser)
+
     return parser.parse_args()

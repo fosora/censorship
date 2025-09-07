@@ -1,7 +1,8 @@
+from src.image_data import ImageData
 from src.args import get_args
 from src.debug_mode.debug import add_debug_data
 from src.debug_mode.log import AppLogger
-from src.file_management.files import get_file_data, get_files, save_file_data
+from src.file_management.files import get_files, save_file_data
 from src.image_edition.image import get_image, save_image, censor_image
 from src.nsfw_detection.nude_detection import detect_nude
 
@@ -19,84 +20,82 @@ def main(args):
     logger.info(f"Found {len(files)} files to process")
 
     logger.info("Loading file data")
-    data = get_file_data(files)
-    logger.info(f"Loaded data for {len(data)} files")
+    image_data = [ImageData(file=f) for f in files]
+    logger.info(f"Loaded data for {len(image_data)} files")
 
     logger.info("Starting processing of files")
-    for item in data:
-        logger.info(f"Processing file: {item['name']}")
-        path = item['path']
+    for image in image_data:
+        logger.info(f"Processing file: {image.name}")
         try:
-            logger.info(f"Loading original image for {item['name']}")
-            item['status'] = 'processing'
-            original_image = get_image(path)
-            item['image']['original'] = {
-                'data': original_image,
-                'path': path
-            }
-            logger.info(f"Image loaded for {item['name']}")
+            logger.info(f"Loading original image for {image.name}")
+            image.start()
+            original_image = get_image(image.path)
+            image.set_image('original', original_image, image.path)
+            logger.info(f"Image loaded for {image.name}")
 
-            logger.info(f"Detecting nude content in {item['name']}")
-            item['detect_data'] = detect_nude(path)
-            logger.info(f"Detection completed for {item['name']} with {len(item['detect_data'])} detections")
+            logger.info(f"Detecting nude content in {image.name}")
+            detect_data = detect_nude(image.path)
+            image.add_detection(detect_data)
+            logger.info(f"Detection completed for {image.name}")
 
             if args.debug:
-                logger.debug(f"Detection data: {item['detect_data']}")
-
-                logger.debug(f"Adding debug data to image for {item['name']}")
+                logger.debug(f"Adding debug data to image for {image.name}")
                 debug_path = f'{args.output}/debug'
                 debug_image = add_debug_data(
                     image_data=original_image.copy(), 
-                    detect_data=item['detect_data'],
+                    detect_data=detect_data,
                 )
-                item['image']['debug'] = {
-                    'path': debug_path,
-                    'data':f'{debug_image}/{item["name"]}' 
-                }
-                logger.debug(f"Debug data added for {item['name']}")
+                image.set_image(
+                    'debug', 
+                    debug_image, 
+                    f'{debug_path}/{image.name}'
+                )
+                logger.debug(f"Debug data added for {image.name}")
 
-                logger.debug(f"Saving debug image for {item['name']}")
+                logger.debug(f"Saving debug image for {image.name}")
                 save_image(
-                    name=item['name'], 
+                    name=image.name, 
                     image=debug_image, 
                     output_path=debug_path
                 )
-                logger.debug(f"Debug image saved for {item['name']}")
+                logger.debug(f"Debug image saved for {image.name}")
 
-            logger.info(f"Censoring image {item['name']}")
+            logger.info(f"Censoring image {image.name}")
+            
             censored_image = censor_image(
                 image_data=original_image.copy(), 
-                detect_data=item['detect_data'], 
+                detect_data=detect_data, 
                 pixel_size=args.pixel_size
             )
             censored_path = f'{args.output}/censored'
-            item['image']['censored'] = {
-                'data': censored_image,
-                'path': f'{censored_path}/{item["name"]}'
-            }
-            logger.info(f"Censorship completed for {item['name']}")
+            image.set_image(
+                'censored', 
+                censored_image, 
+                f'{censored_path}/{image.name}'
+            )
+            logger.info(f"Censorship completed for {image.name}")
 
-            logger.info(f"Saving censored image for {item['name']}")
+            logger.info(f"Saving censored image for {image.name}")
             save_image(
-                name=item['name'], 
+                name=image.name, 
                 image=censored_image, 
                 output_path=censored_path
             )
-            logger.info(f"Censored image saved for {item['name']}")
+            logger.info(f"Censored image saved for {image.name}")
 
-            item['status'] = 'done'
-            logger.info(f"Finished processing file: {item['name']}")
+            image.finish()
+            logger.info(f"Finished processing file: {image.name}")
         except Exception as e:
-            item['status'] = 'error'
-            logger.error(f"Error processing file {path}: {e}")
+            image.error(str(e))
+            logger.error(f"Error processing file {image.path}: {e}")
         finally:
-            logger.progress_percent("Overall Progress", data.index(item) + 1, len(data))
+            logger.progress_percent("Overall Progress", image_data.index(image) + 1, len(image_data))
     logger.info("Processing completed for all files")
 
-    if args.debug:
-        logger.info("Saving debug data")
-        save_file_data(data, f'{args.output}/data.json')
-        logger.info("Debug data saved")
+    if args.debug or args.save_result_json:
+        logger.info("Saving debug data to JSON")
+        save_file_data(image_data, args.output)
+        logger.info("Debug data saved to JSON")
 
 if __name__ == "__main__":
     args = get_args()

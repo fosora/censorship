@@ -1,3 +1,4 @@
+import os
 import cv2
 from src.debug_mode.log import AppLogger
 
@@ -5,7 +6,7 @@ logger = AppLogger(
     name="image_edition"
 )
 
-def get_image(path):
+def get_image(path: str):
     """
     Loads an image from the specified file path.
     Args:
@@ -24,7 +25,7 @@ def get_image(path):
     logger.debug(f"Image loaded successfully from {path}")
     return image
 
-def censor_area(image, box, pixel_size=3):
+def censor_area(image, box:list[int], pixel_size:int =3):
     """
     Applies pixelation censorship to a region in an image based on detection data.
 
@@ -54,7 +55,7 @@ def censor_area(image, box, pixel_size=3):
     logger.debug(f"Pixelated area resized back to original size {w}x{h}")
     return image_pixelated
 
-def censor_image(image_data, detect_data, pixel_size=3):
+def censor_image(image_data, detect_data:list[dict], pixel_size:int=3):
     """
     Applies pixelation censorship to all detected regions in an image.
     Args:
@@ -78,7 +79,7 @@ def censor_image(image_data, detect_data, pixel_size=3):
     logger.debug("Image censorship completed")   
     return image_data
 
-def save_image(name, image, output_path='output'):
+def save_image(name:str, image, output_path:str='output'):
     """
     Saves an image to the specified output path.
     Args:
@@ -87,7 +88,6 @@ def save_image(name, image, output_path='output'):
         output_path (str, optional): The directory to save the image in. Default is 'output'.
     """
     logger.debug(f"Preparing to save image {name} to {output_path}")
-    import os
     if not os.path.exists(output_path):
         os.makedirs(output_path)
         logger.debug(f"Created output directory at {output_path}")
