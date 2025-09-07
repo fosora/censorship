@@ -1,24 +1,43 @@
 import logging
 import string
 import sys
+import time
+
+class ColorFormatter(logging.Formatter):
+    COLORS = {
+        "DEBUG":    "\033[90m", 
+        "INFO":     "\033[97m",
+        "WARNING":  "\033[93m",
+        "ERROR":    "\033[91m",
+        "CRITICAL": "\033[31m"
+    }
+    RESET = "\033[0m"
+
+    def format(self, record):
+        log_color = self.COLORS.get(record.levelname, self.RESET)
+        message = super().format(record)
+        return f"{log_color}{message}{self.RESET}"
 
 class AppLogger:
-    def __init__(self, name="app", log_file="app.log", level=logging.INFO):
+    def __init__(
+            self, 
+            name="app", 
+            log_file=f"logs/app{time.time()}.log", 
+            level=logging.INFO
+        ):
+
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
 
         formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-        # Handler para arquivo
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(formatter)
+        self.logger.addHandler(file_handler)
 
-        # Handler para console
+        color_formatter = ColorFormatter("%(asctime)s [%(levelname)s] %(message)s")
         stream_handler = logging.StreamHandler(sys.stdout)
-        stream_handler.setFormatter(formatter)
-
-        if not self.logger.handlers:
-            self.logger.addHandler(file_handler)
-            self.logger.addHandler(stream_handler)
+        stream_handler.setFormatter(color_formatter)
+        self.logger.addHandler(stream_handler)
 
     def debug(self, message):
         self.logger.debug(message)
@@ -28,6 +47,8 @@ class AppLogger:
         self.logger.info(message)
     def error(self, message):
         self.logger.error(message)
+    def critical(self, message): 
+        self.logger.critical(message)
 
     def progress_percent(self, action: string, current: int, total: int, bar_length: int = 30):
         percent = current / total
