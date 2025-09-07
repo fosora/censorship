@@ -20,3 +20,8 @@ def add_file_management_args(parser: argparse.ArgumentParser):
         default=['.jpeg', '.jpg', '.png'], 
         help='List of image file extensions to process (default: .jpeg .jpg .png)'
     )
+    parser.add_argument(
+        '-r', '--recursive',
+        action='store_true',
+        help='Recursively search for images in subdirectories'
+    )

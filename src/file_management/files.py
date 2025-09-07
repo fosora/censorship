@@ -16,6 +16,7 @@ def get_files(
     Returns:
         List[str]: List of image file paths found in the directory.
     """
+    
     folder_path = Path(folder_path)
     return [
         str(file) 

@@ -16,8 +16,15 @@ class ImageVersion:
         return f"ImageVersion(path='{self.path}', data_len={len(self.data)})"
 
     def to_dict(self):
+        if len(self.path) == 0:
+            return {
+                "path": "",
+                "size": "0"
+            }
+        path = Path(self.path)
         return {
-            "path": self.path
+            "path": str(path.absolute()),
+            "size": f"{path.stat().st_size / (1024*1024):.2f} MB",
         }
 
 
@@ -66,7 +73,7 @@ class ImageData:
             raise ValueError(f"Invalid: {version}")
 
     def to_dict(self):
-        return {
+        data = {
             "name": self.__name,
             "path": self.__path,
             "detect_data": self.__detect_data,
@@ -75,9 +82,13 @@ class ImageData:
                 for key, value in self.__image.items() 
                     if len(value.path) > 0
             },
-            "status": self.__status.value,
-            "error_msg": self.__error_msg
+            "status": self.__status.value
         }
+        
+        if self.__error_msg:
+            data["error_msg"] = self.__error_msg
+
+        return data
 
     def __repr__(self):
         return f"ImageData(name='{self.__name}', status='{self.status}')"

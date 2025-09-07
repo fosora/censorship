@@ -13,14 +13,14 @@ def main(args):
     )
 
     logger.info("Fetching files to process")
-    files = get_files(args.input)
+    files = get_files(args.input, args.extensions)
     if len(files) == 0:
         logger.warning("No files found to process.")
         return
     logger.info(f"Found {len(files)} files to process")
 
     logger.info("Loading file data")
-    image_data = [ImageData(file=f) for f in files]
+    image_data = [ImageData(file) for file in files]
     logger.info(f"Loaded data for {len(image_data)} files")
 
     logger.info("Starting processing of files")
@@ -37,6 +37,11 @@ def main(args):
             detect_data = detect_nude(image.path)
             image.add_detection(detect_data)
             logger.info(f"Detection completed for {image.name}")
+
+            if not detect_data and not args.force_process:
+                logger.info(f"No nude content detected in {image.name}, skipping censorship")
+                image.finish()
+                continue
 
             if args.debug:
                 logger.debug(f"Adding debug data to image for {image.name}")
