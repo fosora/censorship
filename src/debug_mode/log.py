@@ -22,7 +22,7 @@ class AppLogger:
     def __init__(
             self, 
             name="app", 
-            log_file=f"logs/app{time.time()}.log", 
+            log_file=f"logs/app_{time.time()}.log", 
             level=logging.INFO
         ):
 

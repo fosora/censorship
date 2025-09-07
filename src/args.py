@@ -1,9 +1,15 @@
 import argparse
 
+def valid_pixel_size(pixel_size):
+    pixel_size = int(pixel_size)
+    if pixel_size < 1 or pixel_size > 256:
+        raise argparse.ArgumentTypeError(f"The value {pixel_size} is not between 1 and 256.")
+    return pixel_size
+
 def get_args():
     """
     Parse command line arguments.
-    
+
     Returns:
         argparse.Namespace: Parsed command line arguments.
     """
@@ -24,7 +30,7 @@ def get_args():
     )
     parser.add_argument(
         '-p', '--pixel-size', 
-        type=int, 
+        type=valid_pixel_size, 
         default=3, 
         help='Pixelation block size for censorship (default: 3)'
     )
