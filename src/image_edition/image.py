@@ -72,6 +72,11 @@ def censor_image(image_data, detect_data, pixel_size=3):
     return image_data
 
 def save_image(name, image, output_path='output'):
+    import os
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+        logger.debug(f"Created output directory at {output_path}")
+
     logger.debug(f"Saving image {name} to {output_path}")
     cv2.imwrite(f"{output_path}/{name}", image)
     logger.debug(f"Image {name} saved successfully to {output_path}")

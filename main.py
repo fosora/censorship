@@ -1,25 +1,18 @@
+from src.args import get_args
+from src.debug_mode.debug import add_debug_data
 from src.debug_mode.log import AppLogger
 from src.file_management.files import get_file_data, get_files, save_file_data
-from src.image_edition.image import get_image, save_image
+from src.image_edition.image import get_image, save_image, censor_image
 from src.nsfw_detection.nude_detection import detect_nude
 
-def censor_image(name, image_data, detect_data):
-    image_data['censored'] = image_data['original'].copy()
-    from src.image_edition.image import censor_image
-    image_data['censored'] = censor_image(image_data['censored'], detect_data)
-    save_image(name, image_data['censored'], output_path='output/censored')
-
-def add_debug_censor(name, image_data, detect_data):
-    image_data['debug'] = image_data['original'].copy()
-    from src.debug_mode.debug import add_debug_data
-    image_data['debug'] = add_debug_data(image_data['debug'], detect_data)
-    save_image(name, image_data['debug'], output_path='output/debug')
-
-def main():
-    logger = AppLogger(name="main")
+def main(args):   
+    logger = AppLogger(
+        name="main",
+        level="DEBUG" if args.debug else "INFO"
+    )
 
     logger.info("Fetching files to process")
-    files = get_files()
+    files = get_files(args.input)
     if len(files) == 0:
         logger.warning("No files found to process.")
         return
@@ -43,12 +36,36 @@ def main():
             item['detect_data'] = detect_nude(path)
             logger.info(f"Detection completed for {item['name']} with {len(item['detect_data'])} detections")
 
-            logger.debug(f"Detection data: {item['detect_data']}")
-            add_debug_censor(item['name'], item['image'], item['detect_data'])
+            if args.debug:
+                logger.debug(f"Detection data: {item['detect_data']}")
+
+                logger.debug(f"Adding debug data to image for {item['name']}")
+                item['image']['debug'] = add_debug_data(
+                    image_data=item['image']['original'].copy(), 
+                    detect_data=item['detect_data'],
+                )
+                logger.debug(f"Debug data added for {item['name']}")
+
+                logger.debug(f"Saving debug image for {item['name']}")
+                save_image(
+                    name=item['name'], 
+                    image=item['image']['debug'], 
+                    output_path=f'{args.output}/debug'
+                )
+                logger.debug(f"Debug image saved for {item['name']}")
 
             logger.info(f"Censoring image {item['name']}")
-            censor_image(item['name'], item['image'], item['detect_data'])
+            item['image']['censored'] = censor_image(
+                image_data=item['image']['original'].copy(), 
+                detect_data=item['detect_data'], 
+                pixel_size=args.pixel_size
+            )
             logger.info(f"Censorship completed for {item['name']}")
+            save_image(
+                name=item['name'], 
+                image=item['image']['censored'], 
+                output_path=f'{args.output}/censored'
+            )
 
             item['status'] = 'done'
             logger.info(f"Finished processing file: {item['name']}")
@@ -59,14 +76,21 @@ def main():
             logger.progress_percent("Overall Progress", data.index(item) + 1, len(data))
     logger.info("Processing completed for all files")
 
-    #save_file_data(data)
+    if args.debug:
+        logger.info("Saving debug data")
+        save_file_data(data)
+        logger.info("Debug data saved")
 
 if __name__ == "__main__":
-    logger = AppLogger()
+    args = get_args()
+    logger = AppLogger(
+        name="app",
+        level="DEBUG" if args.debug else "INFO"
+    )
     try:
         logger.info("Starting Application...")
-        main()
+        main(args)
     except Exception as e:
-        logger.error(f"Application error: {e}")
+        logger.critical(f"Application error: {e}")
     finally:
         logger.info("Application finished.")

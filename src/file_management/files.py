@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List
 
 def get_files(
-        folder_path = Path("files") , 
+        folder_path = "files" , 
         extensions = (".jpeg", ".jpg", ".png")
     ):
     """
@@ -14,6 +14,7 @@ def get_files(
     Returns:
         List[str]: List of image file paths found in the directory.
     """
+    folder_path = Path(folder_path)
     return [
         str(file) 
         for file in folder_path.iterdir() 
@@ -41,6 +42,8 @@ def get_file_data(files: List[str]):
             - 'image': A dictionary with keys both set to None as default
                 - 'original' 
                 - 'censored'
+                - 'debug'
+            - 'status': The processing status of the image, initialized to 'pending'.
             - 'detect_data': A list of detection dictionaries for the image, filtered by the specified labels.  
                 Each detection dictionary includes information such as:  
                     - 'class': The detected label/class.  
