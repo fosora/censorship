@@ -6,6 +6,13 @@ logger = AppLogger(
 )
 
 def get_image(path):
+    """
+    Loads an image from the specified file path.
+    Args:
+        path (str): The file path to the image.
+    Returns:
+        np.ndarray: The loaded image data.
+    """
     logger.debug(f"Loading image from {path}")
     
     image = cv2.imread(path)
@@ -72,6 +79,14 @@ def censor_image(image_data, detect_data, pixel_size=3):
     return image_data
 
 def save_image(name, image, output_path='output'):
+    """
+    Saves an image to the specified output path.
+    Args:
+        name (str): The name of the image file to save.
+        image (np.ndarray): The image data to save.
+        output_path (str, optional): The directory to save the image in. Default is 'output'.
+    """
+    logger.debug(f"Preparing to save image {name} to {output_path}")
     import os
     if not os.path.exists(output_path):
         os.makedirs(output_path)
