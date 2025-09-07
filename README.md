@@ -43,7 +43,7 @@ Place images to be processed in the `files/` directory.
 Run the main script:
 
 ```bash
-source /workspaces/censorship/.venv/bin/activate
+source .venv/bin/activate
 ```
 
 ```bash
