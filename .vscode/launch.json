@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Python File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}"
+        },
+        {
+            "name": "Python Debugger: With parameters",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "args": [
+                "--input=./files/tests",
+                "--output=./output/tests",
+                "--debug"
+            ]
+        },
+        {
+            "name": "Python Debugger: No parameters",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "args": []
+        }
+    ]
+}
