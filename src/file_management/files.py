@@ -24,7 +24,6 @@ def get_files(
 
 def get_file_data(files: List[str]):
     """
-
     Args:  
         files (List[str]): List of image file paths to be analyzed.
         labels (List[str], optional): List of labels to filter the detection results. If not provided, uses the default labels:  
