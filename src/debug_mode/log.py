@@ -22,7 +22,8 @@ class AppLogger:
     def __init__(
             self, 
             name="app", 
-            log_file=f"logs/app_{time.time()}.log", 
+            log_path="/logs",
+            log_file=f"app_{time.time()}.log", 
             level=logging.INFO
         ):
 
@@ -30,7 +31,7 @@ class AppLogger:
         self.logger.setLevel(level)
 
         formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-        file_handler = logging.FileHandler(log_file)
+        file_handler = logging.FileHandler(f"{log_path}/{log_file}")
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
 

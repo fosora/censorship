@@ -2,8 +2,7 @@ from nudenet import NudeDetector
 
 __valid_labels__ = [
     "FEMALE_GENITALIA_COVERED", "FEMALE_GENITALIA_EXPOSED",
-    "MALE_GENITALIA_COVERED", "MALE_GENITALIA_EXPOSED",
-    "ANUS_EXPOSED", "ANUS_COVERED",
+    "MALE_GENITALIA_COVERED", "MALE_GENITALIA_EXPOSED"
 ]
 
 def detect_nude(file: str, labels:list[str] = __valid_labels__):
@@ -17,7 +16,6 @@ def detect_nude(file: str, labels:list[str] = __valid_labels__):
         List[Dict]: List of detection results with bounding boxes and classes.
     """
     detector = NudeDetector(
-        #model_path="src/nsfw_detection/models/hs-real-anime/y11s/320-fp16.onnx", 
         model_path="src/nsfw_detection/models/640m.onnx", 
         inference_resolution=640
     )

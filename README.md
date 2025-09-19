@@ -58,21 +58,21 @@ You can also customize parameters, for example:
 python main.py --input my_images --output results --pixel-size 8 --debug --force-process --save-result-json
 ```
 
-| Argument                   | Default                  | Description                                                                                  |
-|----------------------------|--------------------------|----------------------------------------------------------------------------------------------|
-| `-i`, `--input`            | `files`                  | Input directory containing images to process                                                 |
-| `-o`, `--output`           | `output`                 | Output directory to save processed images                                                    |
-| `-e`, `--extensions`       | `.jpeg .jpg .png`        | List of image file extensions to process                                                     |
-| `-r`, `--recursive`        | *(flag)*\*               | Recursively search for images in subdirectories                                              |
-| `-p`, `--pixel-size`       | `3`                      | Pixelation block size for censorship (higher = more pixelated, range: 1-256)                 |
-| `-b`, `--blur`             | *(flag)*\*               | Apply blur effect for censorship instead of pixelation (Not working yet)                     |
-| `-d`, `--debug`            | *(flag)*                 | Enable debug mode to save debug images with detection overlays                               |
-| `--save-result-json`       | *(flag)*                 | Save the results to a JSON file                                                              |
-| `-l`, `--labels`           | *(all labels)*           | List of labels to detect                                                                     |
-| `--force-process`          | *(flag)*                 | Force processing of images even when they have no changes                                    |
-| `-v`, `--verbose`          | *(flag)*\*               | Enable verbose output                                                                        |
-| `-q`, `--quiet`            | *(flag)*\*               | Suppress non-error messages                                                                  |
-| `--logfile`                | `logs`\*                 | Path to the log file                                                                         |
-| `--logfile-level`          | `INFO`\*                 | Logging level for the log file (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`)             |
+| Argument                   | Default                             | Description                                                                                  |
+|----------------------------|-------------------------------------|----------------------------------------------------------------------------------------------|
+| `-i`, `--input`            | `files`                             | Input directory containing images to process                                                 |
+| `-o`, `--output`           | `output`                            | Output directory to save processed images                                                    |
+| `-e`, `--extensions`       | `.jpeg .jpg .png`                   | List of image file extensions to process                                                     |
+| `-r`, `--recursive`        | *(flag)*\*                          | Recursively search for images in subdirectories                                              |
+| `-p`, `--pixel-size`       | `3`                                 | Pixelation block size for censorship (higher = more pixelated, range: 1-256)                 |
+| `-b`, `--blur`             | *(flag)*\*                          | Apply blur effect for censorship instead of pixelation (Not working yet)                     |
+| `-d`, `--debug`            | *(flag)*                            | Enable debug mode to save debug images with detection overlays                               |
+| `--save-result-json`       | *(flag)*                            | Save the results to a JSON file                                                              |
+| `-l`, `--labels`           | FEMALE_GENITALIA and MALE_GENITALIA | List of labels to detect                                                                     |
+| `--force-process`          | *(flag)*                            | Force processing of images even when they have no changes                                    |
+| `-v`, `--verbose`          | *(flag)*\*                          | Enable verbose output                                                                        |
+| `-q`, `--quiet`            | *(flag)*\*                          | Suppress non-error messages                                                                  |
+| `--logpath`                | `logs`                              | Folder to the log file                                                                       |
+| `--loglevel`               | `INFO`                              | Logging level for the log file (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`)             |
 
 > The arguments that contains a \* on it are not working yet and might even be removed. Avoid using it.

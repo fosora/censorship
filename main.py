@@ -9,7 +9,11 @@ from src.nsfw_detection.nude_detection import detect_nude
 def main(args):   
     logger = AppLogger(
         name="main",
-        level="DEBUG" if args.debug else "INFO"
+        log_path=args.output if args.output else args.logpath,
+        level=
+            "DEBUG" if args.debug else 
+            args.loglevel if args.loglevel else 
+            "INFO"
     )
 
     logger.info("Fetching files to process")
