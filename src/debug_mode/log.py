@@ -22,11 +22,13 @@ class AppLogger:
     def __init__(
             self, 
             name="app", 
-            log_path="/logs",
+            log_path="./logs",
             log_file=f"app_{time.time()}.log", 
             level=logging.INFO
         ):
-
+        mkdirs = __import__('os').makedirs
+        mkdirs(log_path, exist_ok=True)
+        
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
 

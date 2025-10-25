@@ -6,7 +6,7 @@ from src.file_management.files import get_files, save_file_data
 from src.image_edition.image import get_image, save_image, censor_image
 from src.nsfw_detection.nude_detection import detect_nude
 
-def main(args):   
+def main(args):
     logger = AppLogger(
         name="main",
         log_path=args.output if args.output else args.logpath,

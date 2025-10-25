@@ -38,5 +38,5 @@ def save_file_data(data: list[ImageData], output_path: str = "output"):
     
     json_data = [image.to_dict() for image in data]
 
-    with open(f'{output_path}/data.json', 'w') as file:
+    with open(f'{output_path}/results.json', 'w') as file:
         json.dump(json_data, file, indent=4)
