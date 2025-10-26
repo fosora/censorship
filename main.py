@@ -12,7 +12,7 @@ def main(args):
         log_path=args.output if args.output else args.logpath,
         level=
             "DEBUG" if args.debug else 
-            args.loglevel if args.loglevel else 
+            args.logfile_level if args.logfile_level else 
             "INFO"
     )
 
