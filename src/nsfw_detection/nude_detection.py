@@ -5,7 +5,7 @@ __valid_labels__ = [
     "MALE_GENITALIA_COVERED", "MALE_GENITALIA_EXPOSED"
 ]
 
-def detect_nude(file: str, labels:list[str] = __valid_labels__):
+def detect_nude(file: str, labels: list[str] = __valid_labels__):
     """
     Detects nude content in an image file using the NudeNet model.
     Args:
@@ -16,15 +16,15 @@ def detect_nude(file: str, labels:list[str] = __valid_labels__):
         List[Dict]: List of detection results with bounding boxes and classes.
     """
     detector = NudeDetector(
-        model_path="src/nsfw_detection/models/640m.onnx", 
+        model_path="src/nsfw_detection/models/default/640m.onnx", 
         inference_resolution=640
     )
     image = detector.detect(file)
-    if(len(labels) == 0):
+    if len(labels) == 0:
         return image
-    
+
     return [
-        detect 
-        for detect in image 
-            if detect['class'] in labels
+        detect
+        for detect in image
+        if detect.get('class') in labels
     ]

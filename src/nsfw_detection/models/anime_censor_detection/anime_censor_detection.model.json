@@ -1,0 +1,19 @@
+{
+    "label": "Anime Censor Detection v1.0",
+    "name": "censor-detection-v1.0",
+    "confident": 0.7,
+    "paths":[
+        {
+            "label": "N",
+            "name": "n",
+            "inference_resolution": 640,
+            "path": "src/nsfw_detection/models/anime_censor_detection/censor_detect_v1.0_n.onnx"
+        },
+        {
+            "label": "S",
+            "name": "s",
+            "inference_resolution": 640,
+            "path": "src/nsfw_detection/models/anime_censor_detection/censor_detect_v1.0_s.onnx"
+        }
+    ]
+}

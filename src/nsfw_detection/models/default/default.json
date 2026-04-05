@@ -1,0 +1,13 @@
+{
+    "label": "Default",
+    "name": "default",
+    "confident": 0.9,
+    "paths":[
+        {
+            "label": "640m",
+            "name": "default-640m",
+            "inference_resolution": 640,
+            "path": "src/nsfw_detection/models/default/640m.onnx"
+        }
+    ]
+}

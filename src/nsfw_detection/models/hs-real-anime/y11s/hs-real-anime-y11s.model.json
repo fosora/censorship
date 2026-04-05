@@ -1,0 +1,19 @@
+{
+    "label": "Real Anime Y11S",
+    "name": "hs-real-anime-y11s",
+    "confident": 0.7,
+    "paths": [
+        {
+            "label": "640m FP 16",
+            "name": "640m-fp16",
+            "inference_resolution": 640,
+            "path": "src/nsfw_detection/models/hs-real-anime/y11s/640-fp16.onnx"
+        },
+        {
+            "label": "640m FP 32",
+            "name": "640m-fp32",
+            "inference_resolution": 640,
+            "path": "src/nsfw_detection/models/hs-real-anime/y11s/640-fp32.onnx"
+        }
+    ]
+}
