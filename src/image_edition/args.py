@@ -13,8 +13,3 @@ def add_image_edition_args(parser: argparse.ArgumentParser):
         default=3, 
         help='Pixelation block size for censorship (default: 3)'
     )
-    parser.add_argument(
-        '-b', '--blur', 
-        action='store_true', 
-        help='Apply blur effect for censorship instead of pixelation (Not working yet)',
-    )
