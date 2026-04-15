@@ -5,22 +5,29 @@ from src.image_data import ImageData
 
 def get_files(
         folder_path = "files" , 
-        extensions = (".jpeg", ".jpg", ".png")
+        extensions = (".jpeg", ".jpg", ".png"),
+        recursive: bool = False
     ):
     """
     Returns a list of image file paths in a directory.
     Args:
         folder_path (str): Path to the directory to search for images. Default: "files".
         extensions (tuple): Allowed image file extensions. Default: (".jpeg", ".jpg", ".png").
+        recursive (bool): Recursively search subdirectories when True.
 
     Returns:
         List[str]: List of image file paths found in the directory.
     """
     
     folder_path = Path(folder_path)
+    if recursive:
+        candidate_files = folder_path.rglob("*")
+    else:
+        candidate_files = folder_path.iterdir()
+
     return [
         str(file) 
-        for file in folder_path.iterdir() 
+        for file in candidate_files
             if 
                 file.is_file() and 
                 file.suffix.lower() in extensions

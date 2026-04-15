@@ -17,7 +17,7 @@ def main(args):
     )
 
     logger.info("Fetching files to process")
-    files = get_files(args.input, args.extensions)
+    files = get_files(args.input, args.extensions, args.recursive)
     if len(files) == 0:
         logger.warning("No files found to process.")
         return
