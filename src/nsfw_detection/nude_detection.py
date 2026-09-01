@@ -19,7 +19,7 @@ def detect_nude(file: str, labels: list[str] = __valid_labels__):
         return image
 
     detector = NudeDetector(
-        model_path="src/nsfw_detection/models/default/640m.onnx", 
+        model_path="models/nude-net/640m.onnx", 
         inference_resolution=640
     )
     image = detector.detect(file)
