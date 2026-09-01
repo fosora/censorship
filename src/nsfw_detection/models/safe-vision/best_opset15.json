@@ -1,0 +1,14 @@
+{
+    "label": "Safe Vision Best",
+    "name": "safe-vision-best-opset15",
+    "original": "https://github.com/im-syn/SafeVision/raw/f3aec7c282dfdb7a84593ab615b5e75570cd435e/Models/best.onnx",
+    "confident": 0.7,
+    "paths":[
+        {
+            "label": "Safe Vision Best",
+            "name": "safe-vision-best-opset15",
+            "inference_resolution": 320,
+            "path": "src/nsfw_detection/models/safe-vision/best_opset15.onnx"
+        }
+    ]
+}
